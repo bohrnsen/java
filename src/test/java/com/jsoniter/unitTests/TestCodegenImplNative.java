@@ -4,9 +4,6 @@ import junit.framework.TestCase;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Locale;
-import com.jsoniter.spi.*;
 
 public class TestCodegenImplNative extends TestCase {
     
