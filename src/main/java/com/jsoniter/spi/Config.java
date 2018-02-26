@@ -1,11 +1,14 @@
 package com.jsoniter.spi;
 
+import com.jsoniter.MethodData;
 import com.jsoniter.annotation.*;
 import com.jsoniter.output.EncodingMode;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.*;
 import java.util.*;
+
+import static com.jsoniter.GlobalData.dictionary;
 
 public class Config extends EmptyExtension {
 
@@ -386,35 +389,46 @@ public class Config extends EmptyExtension {
     }
 
     private void updateBindings(ClassDescriptor desc) {
+        MethodData methodData =  new MethodData(0);
+        dictionary.put("IterImplForStreaming - readNumber", methodData);
+        methodData.branchReached[0] = true;
         boolean globalOmitDefault = JsoniterSpi.getCurrentConfig().omitDefaultValue();
         for (Binding binding : desc.allBindings()) {
+            methodData.branchReached[1] = true;
             boolean annotated = false;
             JsonIgnore jsonIgnore = getJsonIgnore(binding.annotations);
             if (jsonIgnore != null) {
+                methodData.branchReached[2] = true;
                 annotated = true;
                 if (jsonIgnore.ignoreDecoding()) {
+                    methodData.branchReached[3] = true;
                     binding.fromNames = new String[0];
                 }
                 if (jsonIgnore.ignoreEncoding()) {
+                    methodData.branchReached[4] = true;
                     binding.toNames = new String[0];
                 }
             }
             // map JsonUnwrapper is not getter
             JsonUnwrapper jsonUnwrapper = getJsonUnwrapper(binding.annotations);
             if (jsonUnwrapper != null) {
+                methodData.branchReached[5] = true;
                 annotated = true;
                 binding.fromNames = new String[0];
                 binding.toNames = new String[0];
             }
             if (globalOmitDefault) {
+                methodData.branchReached[6] = true;
                 binding.defaultValueToOmit = createOmitValue(binding.valueType);
             }
             JsonProperty jsonProperty = getJsonProperty(binding.annotations);
             if (jsonProperty != null) {
+                methodData.branchReached[7] = true;
                 annotated = true;
                 updateBindingWithJsonProperty(binding, jsonProperty);
             }
             if (getAnnotation(binding.annotations, JsonMissingProperties.class) != null) {
+                methodData.branchReached[8] = true;
                 annotated = true;
                 // this binding will not bind from json
                 // instead it will be set by jsoniter with missing property names
@@ -422,6 +436,7 @@ public class Config extends EmptyExtension {
                 desc.onMissingProperties = binding;
             }
             if (getAnnotation(binding.annotations, JsonExtraProperties.class) != null) {
+                methodData.branchReached[9] = true;
                 annotated = true;
                 // this binding will not bind from json
                 // instead it will be set by jsoniter with extra properties
@@ -429,23 +444,33 @@ public class Config extends EmptyExtension {
                 desc.onExtraProperties = binding;
             }
             if (annotated && binding.field != null) {
+                methodData.branchReached[10] = true;
                 if (desc.setters != null) {
+                    methodData.branchReached[11] = true;
                     for (Binding setter : desc.setters) {
+                        methodData.branchReached[12] = true;
                         if (binding.field.getName().equals(setter.name)) {
+                            methodData.branchReached[13] = true;
                             setter.fromNames = new String[0];
                             setter.toNames = new String[0];
                         }
                     }
                 }
+                methodData.branchReached[14] = true;
                 if (desc.getters != null) {
+                    methodData.branchReached[15] = true;
                     for (Binding getter : desc.getters) {
+                        methodData.branchReached[16] = true;
                         if (binding.field.getName().equals(getter.name)) {
+                            methodData.branchReached[17] = true;
                             getter.fromNames = new String[0];
                             getter.toNames = new String[0];
                         }
                     }
                 }
+                methodData.branchReached[15] = true;
             }
+            methodData.branchReached[16] = true;
         }
     }
 
