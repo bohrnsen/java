@@ -11,6 +11,8 @@ import java.lang.reflect.Type;
 import java.lang.reflect.WildcardType;
 import java.util.*;
 
+import static com.jsoniter.GlobalData.dictionary;
+
 class Codegen {
 
     // only read/write when generating code with synchronized protection
@@ -122,65 +124,94 @@ class Codegen {
     }
 
     private static Type chooseImpl(Type type) {
+        MethodData methodData =  new MethodData(26);
+        dictionary.put("Codegen - chooseImpl", methodData);
         Type[] typeArgs = new Type[0];
         Class clazz;
+        methodData.branchReached[0] = true;
         if (type instanceof ParameterizedType) {
+            methodData.branchReached[1] = true;
             ParameterizedType pType = (ParameterizedType) type;
             clazz = (Class) pType.getRawType();
             typeArgs = pType.getActualTypeArguments();
         } else if (type instanceof WildcardType) {
+            methodData.branchReached[2] = true;
             return Object.class;
         } else {
+            methodData.branchReached[3] = true;
             clazz = (Class) type;
         }
+        methodData.branchReached[4] = true;
         Class implClazz = JsoniterSpi.getTypeImplementation(clazz);
         if (Collection.class.isAssignableFrom(clazz)) {
+            methodData.branchReached[5] = true;
             Type compType = Object.class;
             if (typeArgs.length == 0) {
+                methodData.branchReached[6] = true;
                 // default to List<Object>
             } else if (typeArgs.length == 1) {
+                methodData.branchReached[7] = true;
                 compType = typeArgs[0];
             } else {
+                methodData.branchReached[8] = true;
                 throw new IllegalArgumentException(
                         "can not bind to generic collection without argument types, " +
                                 "try syntax like TypeLiteral<List<Integer>>{}");
             }
+            methodData.branchReached[9] = true;
             if (clazz == List.class) {
-                clazz = implClazz == null ? ArrayList.class : implClazz;
+                methodData.branchReached[10] = true;
+                clazz = implClazz == null ? ArrayList.class: implClazz;
             } else if (clazz == Set.class) {
+                methodData.branchReached[11] = true;
                 clazz = implClazz == null ? HashSet.class : implClazz;
             }
+            methodData.branchReached[12] = true;
             return GenericsHelper.createParameterizedType(new Type[]{compType}, null, clazz);
         }
         if (Map.class.isAssignableFrom(clazz)) {
+            methodData.branchReached[13] = true;
             Type keyType = String.class;
             Type valueType = Object.class;
             if (typeArgs.length == 0) {
+                methodData.branchReached[14] = true;
                 // default to Map<String, Object>
             } else if (typeArgs.length == 2) {
+                methodData.branchReached[15] = true;
                 keyType = typeArgs[0];
                 valueType = typeArgs[1];
             } else {
+                methodData.branchReached[16] = true;
                 throw new IllegalArgumentException(
                         "can not bind to generic collection without argument types, " +
                                 "try syntax like TypeLiteral<Map<String, String>>{}");
             }
+            methodData.branchReached[17] = true;
             if (clazz == Map.class) {
+                methodData.branchReached[18] = true;
                 clazz = implClazz == null ? HashMap.class : implClazz;
             }
             if (keyType == Object.class) {
+                methodData.branchReached[19] = true;
                 keyType = String.class;
             }
+            methodData.branchReached[20] = true;
             DefaultMapKeyDecoder.registerOrGetExisting(keyType);
             return GenericsHelper.createParameterizedType(new Type[]{keyType, valueType}, null, clazz);
         }
+
+        methodData.branchReached[21] = true;
         if (implClazz != null) {
+            methodData.branchReached[22] = true;
             if (typeArgs.length == 0) {
+                methodData.branchReached[23] = true;
                 return implClazz;
             } else {
+                methodData.branchReached[24] = true;
                 return GenericsHelper.createParameterizedType(typeArgs, null, implClazz);
             }
         }
+        methodData.branchReached[25] = true;
         return type;
     }
 
