@@ -549,7 +549,7 @@ class IterImplForStreaming {
     }
 
     public static final String readNumber(final JsonIterator iter) throws IOException {
-        MethodData methodData =  new MethodData(24);
+        MethodData methodData =  new MethodData(23);
         dictionary.put("IterImplForStreaming - readNumber", methodData);
         int j = 0;
         for (; ; ) {
