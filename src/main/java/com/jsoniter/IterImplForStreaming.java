@@ -385,91 +385,134 @@ class IterImplForStreaming {
     }
 
     public final static int readStringSlowPath(JsonIterator iter, int j) throws IOException {
+        MethodData methodData =  new MethodData(42);
+        dictionary.put("IterImplForStreaming - readStringSlowPath", methodData);
+        methodData.branchReached[0] = true;
         boolean isExpectingLowSurrogate = false;
         for (;;) {
+            methodData.branchReached[1] = true;
             int bc = readByte(iter);
             if (bc == '"') {
+                methodData.branchReached[2] = true;
                 return j;
             }
+            methodData.branchReached[3] = true;
             if (bc == '\\') {
+                methodData.branchReached[4] = true;
                 bc = readByte(iter);
                 switch (bc) {
                     case 'b':
+                        methodData.branchReached[5] = true;
                         bc = '\b';
                         break;
                     case 't':
+                        methodData.branchReached[6] = true;
                         bc = '\t';
                         break;
                     case 'n':
+                        methodData.branchReached[7] = true;
                         bc = '\n';
                         break;
                     case 'f':
+                        methodData.branchReached[8] = true;
                         bc = '\f';
                         break;
                     case 'r':
+                        methodData.branchReached[9] = true;
                         bc = '\r';
                         break;
                     case '"':
+                        methodData.branchReached[10] = true;
                     case '/':
+                        methodData.branchReached[11] = true;
                     case '\\':
+                        methodData.branchReached[12] = true;
                         break;
                     case 'u':
+                        methodData.branchReached[13] = true;
                         bc = (IterImplString.translateHex(readByte(iter)) << 12) +
                                 (IterImplString.translateHex(readByte(iter)) << 8) +
                                 (IterImplString.translateHex(readByte(iter)) << 4) +
                                 IterImplString.translateHex(readByte(iter));
                         if (Character.isHighSurrogate((char) bc)) {
+                            methodData.branchReached[14] = true;
                             if (isExpectingLowSurrogate) {
+                                methodData.branchReached[15] = true;
                                 throw new JsonException("invalid surrogate");
                             } else {
+                                methodData.branchReached[16] = true;
                                 isExpectingLowSurrogate = true;
                             }
+                            methodData.branchReached[17] = true;
                         } else if (Character.isLowSurrogate((char) bc)) {
+                            methodData.branchReached[18] = true;
                             if (isExpectingLowSurrogate) {
+                                methodData.branchReached[19] = true;
                                 isExpectingLowSurrogate = false;
                             } else {
+                                methodData.branchReached[20] = true;
                                 throw new JsonException("invalid surrogate");
                             }
+                            methodData.branchReached[21] = true;
                         } else {
+                            methodData.branchReached[22] = true;
                             if (isExpectingLowSurrogate) {
+                                methodData.branchReached[23] = true;
                                 throw new JsonException("invalid surrogate");
                             }
+                            methodData.branchReached[24] = true;
                         }
+                        methodData.branchReached[25] = true;
                         break;
 
                     default:
+                        methodData.branchReached[26] = true;
                         throw iter.reportError("readStringSlowPath", "invalid escape character: " + bc);
                 }
             } else if ((bc & 0x80) != 0) {
+                methodData.branchReached[27] = true;
                 final int u2 = readByte(iter);
                 if ((bc & 0xE0) == 0xC0) {
+                    methodData.branchReached[28] = true;
                     bc = ((bc & 0x1F) << 6) + (u2 & 0x3F);
                 } else {
+                    methodData.branchReached[29] = true;
                     final int u3 = readByte(iter);
                     if ((bc & 0xF0) == 0xE0) {
+                        methodData.branchReached[30] = true;
                         bc = ((bc & 0x0F) << 12) + ((u2 & 0x3F) << 6) + (u3 & 0x3F);
                     } else {
+                        methodData.branchReached[31] = true;
                         final int u4 = readByte(iter);
                         if ((bc & 0xF8) == 0xF0) {
+                            methodData.branchReached[32] = true;
                             bc = ((bc & 0x07) << 18) + ((u2 & 0x3F) << 12) + ((u3 & 0x3F) << 6) + (u4 & 0x3F);
                         } else {
+                            methodData.branchReached[33] = true;
                             throw iter.reportError("readStringSlowPath", "invalid unicode character");
                         }
+                        methodData.branchReached[34] = true;
 
                         if (bc >= 0x10000) {
+                            methodData.branchReached[35] = true;
                             // check if valid unicode
-                            if (bc >= 0x110000)
+                            if (bc >= 0x110000) {
+                                methodData.branchReached[36] = true;
                                 throw iter.reportError("readStringSlowPath", "invalid unicode character");
+                            }
+                            methodData.branchReached[37] = true;
 
                             // split surrogates
                             final int sup = bc - 0x10000;
                             if (iter.reusableChars.length == j) {
+                                methodData.branchReached[38] = true;
                                 char[] newBuf = new char[iter.reusableChars.length * 2];
                                 System.arraycopy(iter.reusableChars, 0, newBuf, 0, iter.reusableChars.length);
                                 iter.reusableChars = newBuf;
                             }
                             iter.reusableChars[j++] = (char) ((sup >>> 10) + 0xd800);
                             if (iter.reusableChars.length == j) {
+                                methodData.branchReached[39] = true;
                                 char[] newBuf = new char[iter.reusableChars.length * 2];
                                 System.arraycopy(iter.reusableChars, 0, newBuf, 0, iter.reusableChars.length);
                                 iter.reusableChars = newBuf;
@@ -480,7 +523,9 @@ class IterImplForStreaming {
                     }
                 }
             }
+            methodData.branchReached[40] = true;
             if (iter.reusableChars.length == j) {
+                methodData.branchReached[41] = true;
                 char[] newBuf = new char[iter.reusableChars.length * 2];
                 System.arraycopy(iter.reusableChars, 0, newBuf, 0, iter.reusableChars.length);
                 iter.reusableChars = newBuf;
