@@ -196,10 +196,8 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.19.1</version>
                 <configuration>
-                    <parallel>methods</parallel>
                     <threadCount>1</threadCount>
                     <reuseForks>false</reuseForks>
-                    <forkCount>4</forkCount>
                     <includes>
                         <include>com.jsoniter.suite.StreamingTests</include>
                         <include>com.jsoniter.suite.NonStreamingTests</include>
