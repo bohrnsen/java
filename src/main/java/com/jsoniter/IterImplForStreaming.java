@@ -549,43 +549,68 @@ class IterImplForStreaming {
     }
 
     public static final String readNumber(final JsonIterator iter) throws IOException {
-        dictionary.put("IterImplForStreaming", new MethodData(24));
+        MethodData methodData =  new MethodData(24);
+        dictionary.put("IterImplForStreaming - readNumber ", methodData);
         int j = 0;
         for (; ; ) {
+            methodData.branchReached[0] = true;
             for (int i = iter.head; i < iter.tail; i++) {
+                methodData.branchReached[1] = true;
                 if (j == iter.reusableChars.length) {
+                    methodData.branchReached[2] = true;
                     char[] newBuf = new char[iter.reusableChars.length * 2];
                     System.arraycopy(iter.reusableChars, 0, newBuf, 0, iter.reusableChars.length);
                     iter.reusableChars = newBuf;
                 }
+                methodData.branchReached[3] = true;
                 byte c = iter.buf[i];
                 switch (c) {
                     case '-':
+                        methodData.branchReached[4] = true;
                     case '+':
+                        methodData.branchReached[5] = true;
                     case '.':
+                        methodData.branchReached[6] = true;
                     case 'e':
+                        methodData.branchReached[7] = true;
                     case 'E':
+                        methodData.branchReached[8] = true;
                     case '0':
+                        methodData.branchReached[9] = true;
                     case '1':
+                        methodData.branchReached[10] = true;
                     case '2':
+                        methodData.branchReached[11] = true;
                     case '3':
+                        methodData.branchReached[12] = true;
                     case '4':
+                        methodData.branchReached[13] = true;
                     case '5':
+                        methodData.branchReached[14] = true;
                     case '6':
+                        methodData.branchReached[14] = true;
                     case '7':
+                        methodData.branchReached[15] = true;
                     case '8':
+                        methodData.branchReached[16] = true;
                     case '9':
+                        methodData.branchReached[17] = true;
                         iter.reusableChars[j++] = (char) c;
                         break;
                     default:
+                        methodData.branchReached[18] = true;
                         iter.head = i;
                         return new String(iter.reusableChars, 0, j);
                 }
+                methodData.branchReached[19] = true;
             }
+            methodData.branchReached[20] = true;
             if (!IterImpl.loadMore(iter)) {
+                methodData.branchReached[21] = true;
                 iter.head = iter.tail;
                 return new String(iter.reusableChars, 0, j);
             }
+            methodData.branchReached[22] = true;
         }
     }
 

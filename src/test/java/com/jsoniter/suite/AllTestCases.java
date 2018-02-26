@@ -61,7 +61,7 @@ public abstract class AllTestCases {
     @AfterClass
     public static void tearDown() {
         for (String key: dictionary.keySet()) {
-            GlobalData.MethodData methodData = dictionary.get(key);
+            MethodData methodData = dictionary.get(key);
             System.out.println(key + " (" + Double.toString(methodData.getCoverage()) + "): " + methodData);
         }
     }
