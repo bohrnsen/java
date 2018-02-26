@@ -53,6 +53,7 @@ import org.junit.runners.Suite;
         TestStreamBuffer.class,
         TestCollection.class,
         TestList.class,
-        TestAnnotationJsonObject.class})
+        TestAnnotationJsonObject.class,
+        TestIterImpl.class})
 public abstract class AllTestCases {
 }
