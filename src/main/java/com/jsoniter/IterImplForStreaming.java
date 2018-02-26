@@ -6,6 +6,8 @@ import com.jsoniter.spi.Slice;
 
 import java.io.IOException;
 
+import static com.jsoniter.GlobalData.dictionary;
+
 class IterImplForStreaming {
 
     public static final int readObjectFieldAsHash(JsonIterator iter) throws IOException {
@@ -547,6 +549,7 @@ class IterImplForStreaming {
     }
 
     public static final String readNumber(final JsonIterator iter) throws IOException {
+        dictionary.put("IterImplForStreaming", new MethodData(24));
         int j = 0;
         for (; ; ) {
             for (int i = iter.head; i < iter.tail; i++) {
