@@ -133,6 +133,10 @@ class Codegen {
         } else {
             clazz = (Class) type;
         }
+        return chooseCollectionImpl(type, clazz, typeArgs);
+    }
+
+    private static Type chooseCollectionImpl(Type type, Class clazz, Type[] typeArgs) {
         Class implClazz = JsoniterSpi.getTypeImplementation(clazz);
         if (Collection.class.isAssignableFrom(clazz)) {
             Type compType = Object.class;
@@ -145,35 +149,27 @@ class Codegen {
                         "can not bind to generic collection without argument types, " +
                                 "try syntax like TypeLiteral<List<Integer>>{}");
             }
-            if (clazz == List.class) {
-                clazz = implClazz == null ? ArrayList.class : implClazz;
-            } else if (clazz == Set.class) {
-                clazz = implClazz == null ? HashSet.class : implClazz;
-            }
-            return GenericsHelper.createParameterizedType(new Type[]{compType}, null, clazz);
+            chooseCollectionSubclassImpl(clazz, compType, implClazz);
         }
+        return chooseMapImpl(type, clazz, typeArgs, implClazz);
+    }
+
+    private static Type chooseCollectionSubclassImpl(Class clazz, Type compType, Class implClazz) {
+        if (clazz == List.class) {
+            clazz = implClazz == null ? ArrayList.class : implClazz;
+        } else if (clazz == Set.class) {
+            clazz = implClazz == null ? HashSet.class : implClazz;
+        }
+        return GenericsHelper.createParameterizedType(new Type[]{compType}, null, clazz);
+    }
+
+    private static Type chooseMapImpl(Type type, Class clazz, Type[] typeArgs, Class implClazz) {
         if (Map.class.isAssignableFrom(clazz)) {
             Type keyType = String.class;
             Type valueType = Object.class;
-            if (typeArgs.length == 0) {
-                // default to Map<String, Object>
-            } else if (typeArgs.length == 2) {
-                keyType = typeArgs[0];
-                valueType = typeArgs[1];
-            } else {
-                throw new IllegalArgumentException(
-                        "can not bind to generic collection without argument types, " +
-                                "try syntax like TypeLiteral<Map<String, String>>{}");
-            }
-            if (clazz == Map.class) {
-                clazz = implClazz == null ? HashMap.class : implClazz;
-            }
-            if (keyType == Object.class) {
-                keyType = String.class;
-            }
-            DefaultMapKeyDecoder.registerOrGetExisting(keyType);
-            return GenericsHelper.createParameterizedType(new Type[]{keyType, valueType}, null, clazz);
+            chooseMapSubclassImpl(keyType, valueType, typeArgs, clazz, implClazz);
         }
+
         if (implClazz != null) {
             if (typeArgs.length == 0) {
                 return implClazz;
@@ -182,6 +178,27 @@ class Codegen {
             }
         }
         return type;
+    }
+
+    private static Type chooseMapSubclassImpl(Type keyType, Type valueType, Type[] typeArgs, Class clazz, Class implClazz) {
+        if (typeArgs.length == 0) {
+            // default to Map<String, Object>
+        } else if (typeArgs.length == 2) {
+            keyType = typeArgs[0];
+            valueType = typeArgs[1];
+        } else {
+            throw new IllegalArgumentException(
+                    "can not bind to generic collection without argument types, " +
+                            "try syntax like TypeLiteral<Map<String, String>>{}");
+        }
+        if (clazz == Map.class) {
+            clazz = implClazz == null ? HashMap.class : implClazz;
+        }
+        if (keyType == Object.class) {
+            keyType = String.class;
+        }
+        DefaultMapKeyDecoder.registerOrGetExisting(keyType);
+        return GenericsHelper.createParameterizedType(new Type[]{keyType, valueType}, null, clazz);
     }
 
     private static void staticGen(String cacheKey, String source) throws IOException {
