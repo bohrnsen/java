@@ -14,7 +14,6 @@ import org.junit.AfterClass;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import static com.jsoniter.GlobalData.dictionary;
-import static com.jsoniter.GlobalData.readNumberBranches;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
@@ -61,7 +60,10 @@ import static com.jsoniter.GlobalData.readNumberBranches;
 public abstract class AllTestCases {
     @AfterClass
     public static void tearDown() {
-        System.out.println("Coverage: " + ((double) dictionary.size()) / readNumberBranches);
+        for (String key: dictionary.keySet()) {
+            GlobalData.MethodData methodData = dictionary.get(key);
+            System.out.println(key + " (" + Double.toString(methodData.getCoverage()) + "): " + methodData);
+        }
     }
 }
 
