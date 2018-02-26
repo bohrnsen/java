@@ -13,6 +13,10 @@ import com.jsoniter.output.TestInteger;
 import org.junit.AfterClass;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
+
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+
 import static com.jsoniter.GlobalData.dictionary;
 
 @RunWith(Suite.class)
@@ -60,10 +64,22 @@ import static com.jsoniter.GlobalData.dictionary;
 public abstract class AllTestCases {
     @AfterClass
     public static void tearDown() {
+        System.out.println();
+        System.out.println("------------------------------------------------------------------------");
+        System.out.println("AD-HOC BRANCH COVERAGE");
+        System.out.println("------------------------------------------------------------------------");
+        System.out.println();
+
+        NumberFormat formatter = new DecimalFormat("#00.00");
+
         for (String key: dictionary.keySet()) {
             MethodData methodData = dictionary.get(key);
-            System.out.println(key + " (" + Double.toString(methodData.getCoverage()) + "): " + methodData);
+            System.out.println(key + " (" + formatter.format(methodData.getCoverage() * 100) + "%): " + methodData);
         }
+
+        System.out.println();
+        System.out.println("------------------------------------------------------------------------");
+        System.out.println();
     }
 }
 
