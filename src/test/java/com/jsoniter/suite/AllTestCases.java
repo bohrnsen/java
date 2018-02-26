@@ -10,8 +10,11 @@ import com.jsoniter.TestString;
 import com.jsoniter.any.TestList;
 import com.jsoniter.output.*;
 import com.jsoniter.output.TestInteger;
+import org.junit.AfterClass;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
+import static com.jsoniter.GlobalData.dictionary;
+import static com.jsoniter.GlobalData.readNumberBranches;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
@@ -54,5 +57,11 @@ import org.junit.runners.Suite;
         TestCollection.class,
         TestList.class,
         TestAnnotationJsonObject.class})
+
 public abstract class AllTestCases {
+    @AfterClass
+    public static void tearDown() {
+        System.out.println("Coverage: " + ((double) dictionary.size()) / readNumberBranches);
+    }
 }
+
