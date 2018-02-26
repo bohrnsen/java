@@ -6,20 +6,38 @@ import org.junit.Test;
 public class TestIterImpl extends TestCase {
 
     @Test(expected = IndexOutOfBoundsException.class)
-    public void testBadJ() throws Exception {
-        JsonIterator iter = JsonIterator.parse("{'a': {'b': {'c': 'd'}}}");
+    public void testReadStringSlowPathIncompleteString1() {
+        String json = "\\b";
+        JsonIterator iter = JsonIterator.parse(json);
         try {
-            IterImpl.readStringSlowPath(iter, 1337);
-        } catch (Exception e) {
-        }
+            IterImpl.readStringSlowPath(iter, 0);
+        } catch (Exception e) {}
     }
 
-    public void test() throws Exception {
-        String json = "\"{a: {}}\"";
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void testReadStringSlowPathIncompleteString2() {
+        String json = "\\n";
         JsonIterator iter = JsonIterator.parse(json);
-        iter.buf[1] = '\\';
-        iter.buf[2] = 'b';
-        int result = IterImpl.readStringSlowPath(iter, 0);
-        assertEquals(0, result);
+        try {
+            IterImpl.readStringSlowPath(iter, 0);
+        } catch (Exception e) {}
+    }
+
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void testReadStringSlowPathIncompleteString3() {
+        String json = "\\f";
+        JsonIterator iter = JsonIterator.parse(json);
+        try {
+            IterImpl.readStringSlowPath(iter, 0);
+        } catch (Exception e) {}
+    }
+
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void testReadStringSlowPathIncompleteString4() {
+        String json = "\\r";
+        JsonIterator iter = JsonIterator.parse(json);
+        try {
+            IterImpl.readStringSlowPath(iter, 0);
+        } catch (Exception e) {}
     }
 }
