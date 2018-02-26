@@ -7,6 +7,7 @@ import java.util.*;
 
 import static com.jsoniter.CodegenImplObjectHash.appendVarDef;
 import static com.jsoniter.CodegenImplObjectHash.appendWrappers;
+import static com.jsoniter.GlobalData.dictionary;
 
 class CodegenImplObjectStrict {
 
@@ -22,6 +23,9 @@ class CodegenImplObjectStrict {
     }};
 
     public static String genObjectUsingStrict(ClassDescriptor desc) {
+        MethodData methodData =  new MethodData(29);
+        dictionary.put("CodegenImplObjectStrict - genObjectUsingStrict", methodData);
+        methodData.branchReached[0] = true;
         List<Binding> allBindings = desc.allDecoderBindings();
         int lastRequiredIdx = assignMaskForRequiredProperties(allBindings);
         boolean hasRequiredBinding = lastRequiredIdx > 0;
@@ -44,12 +48,15 @@ class CodegenImplObjectStrict {
         append(lines, "if (iter.readNull()) { return null; }");
         // === if input is empty obj, return empty obj
         if (hasRequiredBinding) {
+            methodData.branchReached[1] = true;
             append(lines, "long tracker = 0;");
         }
         if (desc.ctor.parameters.isEmpty()) {
+            methodData.branchReached[2] = true;
             append(lines, "{{clazz}} obj = {{newInst}};");
             append(lines, "if (!com.jsoniter.CodegenAccess.readObjectStart(iter)) {");
             if (hasRequiredBinding) {
+                methodData.branchReached[3] = true;
                 appendMissingRequiredProperties(lines, desc);
             }
             append(lines, "return obj;");
@@ -57,33 +64,43 @@ class CodegenImplObjectStrict {
             // because obj can be created without binding
             // so that fields and setters can be bind to obj directly without temp var
         } else {
+            methodData.branchReached[4] = true;
             for (Binding parameter : desc.ctor.parameters) {
+                methodData.branchReached[5] = true;
                 appendVarDef(lines, parameter);
             }
             append(lines, "if (!com.jsoniter.CodegenAccess.readObjectStart(iter)) {");
             if (hasRequiredBinding) {
+                methodData.branchReached[6] = true;
                 appendMissingRequiredProperties(lines, desc);
             } else {
+                methodData.branchReached[7] = true;
                 append(lines, "return {{newInst}};");
             }
             append(lines, "}");
             for (Binding field : desc.fields) {
+                methodData.branchReached[8] = true;
                 if (field.fromNames.length == 0) {
+                    methodData.branchReached[9] = true;
                     continue;
                 }
                 appendVarDef(lines, field);
             }
             for (Binding setter : desc.setters) {
+                methodData.branchReached[10] = true;
                 appendVarDef(lines, setter);
             }
         }
         for (WrapperDescriptor wrapper : desc.bindingTypeWrappers) {
+            methodData.branchReached[11] = true;
             for (Binding param : wrapper.parameters) {
+                methodData.branchReached[12] = true;
                 appendVarDef(lines, param);
             }
         }
         // === bind first field
         if (desc.onExtraProperties != null || !desc.keyValueTypeWrappers.isEmpty()) {
+            methodData.branchReached[13] = true;
             append(lines, "java.util.Map extra = null;");
         }
         append(lines, "com.jsoniter.spi.Slice field = com.jsoniter.CodegenAccess.readObjectFieldAsSlice(iter);");
@@ -92,18 +109,23 @@ class CodegenImplObjectStrict {
         append(lines, "once = false;");
         String rendered = renderTriTree(trieTree);
         if (desc.ctor.parameters.isEmpty()) {
+            methodData.branchReached[14] = true;
             // if not field or setter, the value will set to temp variable
             for (Binding field : desc.fields) {
+                methodData.branchReached[15] = true;
                 if (field.fromNames.length == 0) {
+                    methodData.branchReached[16] = true;
                     continue;
                 }
                 rendered = updateBindingSetOp(rendered, field);
             }
             for (Binding setter : desc.setters) {
+                methodData.branchReached[17] = true;
                 rendered = updateBindingSetOp(rendered, setter);
             }
         }
         if (hasAnythingToBindFrom(allBindings)) {
+            methodData.branchReached[18] = true;
             append(lines, "switch (field.len()) {");
             append(lines, rendered);
             append(lines, "}"); // end of switch
@@ -114,6 +136,7 @@ class CodegenImplObjectStrict {
         append(lines, "while (com.jsoniter.CodegenAccess.nextToken(iter) == ',') {");
         append(lines, "field = com.jsoniter.CodegenAccess.readObjectFieldAsSlice(iter);");
         if (hasAnythingToBindFrom(allBindings)) {
+            methodData.branchReached[19] = true;
             append(lines, "switch (field.len()) {");
             append(lines, rendered);
             append(lines, "}"); // end of switch
@@ -121,30 +144,39 @@ class CodegenImplObjectStrict {
         appendOnUnknownField(lines, desc);
         append(lines, "}"); // end of while
         if (hasRequiredBinding) {
+            methodData.branchReached[20] = true;
             append(lines, "if (tracker != " + expectedTracker + "L) {");
             appendMissingRequiredProperties(lines, desc);
             append(lines, "}");
         }
         if (desc.onExtraProperties != null) {
+            methodData.branchReached[21] = true;
             appendSetExtraProperteis(lines, desc);
         }
         if (!desc.keyValueTypeWrappers.isEmpty()) {
+            methodData.branchReached[22] = true;
             appendSetExtraToKeyValueTypeWrappers(lines, desc);
         }
         if (!desc.ctor.parameters.isEmpty()) {
+            methodData.branchReached[23] = true;
             append(lines, String.format("%s obj = {{newInst}};", CodegenImplNative.getTypeName(desc.clazz)));
             for (Binding field : desc.fields) {
+                methodData.branchReached[24] = true;
                 if (field.fromNames.length == 0) {
+                    methodData.branchReached[25] = true;
                     continue;
                 }
+                methodData.branchReached[26] = true;
                 append(lines, String.format("obj.%s = _%s_;", field.field.getName(), field.name));
             }
             for (Binding setter : desc.setters) {
+                methodData.branchReached[27] = true;
                 append(lines, String.format("obj.%s(_%s_);", setter.method.getName(), setter.name));
             }
         }
         appendWrappers(desc.bindingTypeWrappers, lines);
         append(lines, "return obj;");
+        methodData.branchReached[28] = true;
         return lines.toString()
                 .replace("{{clazz}}", desc.clazz.getCanonicalName())
                 .replace("{{newInst}}", CodegenImplObjectHash.genNewInstCode(desc.clazz, desc.ctor));
