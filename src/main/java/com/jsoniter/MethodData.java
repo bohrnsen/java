@@ -4,9 +4,9 @@ import java.util.Arrays;
 
 public class MethodData {
     int numberOfBranches;
-    boolean[] branchReached;
+    public boolean[] branchReached;
 
-    MethodData(int numberOfBranches) {
+    public MethodData(int numberOfBranches) {
         this.numberOfBranches = numberOfBranches;
         this.branchReached = new boolean[numberOfBranches];
     }

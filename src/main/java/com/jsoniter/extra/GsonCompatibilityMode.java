@@ -9,6 +9,7 @@ import com.google.gson.annotations.SerializedName;
 import com.google.gson.annotations.Since;
 import com.google.gson.annotations.Until;
 import com.jsoniter.JsonIterator;
+import com.jsoniter.MethodData;
 import com.jsoniter.ValueType;
 import com.jsoniter.annotation.JsonIgnore;
 import com.jsoniter.annotation.JsonProperty;
@@ -25,6 +26,8 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
+
+import static com.jsoniter.GlobalData.dictionary;
 
 public class GsonCompatibilityMode extends Config {
 
@@ -333,114 +336,147 @@ public class GsonCompatibilityMode extends Config {
 
     @Override
     public Decoder createDecoder(String cacheKey, Type type) {
+        final MethodData methodData =  new MethodData(31);
+        dictionary.put("extra/GsonCompatibilityMode - createDecoder", methodData);
+        methodData.branchReached[0] = true;
         if (Date.class == type) {
+            methodData.branchReached[1] = true;
             return new Decoder() {
                 @Override
                 public Object decode(JsonIterator iter) throws IOException {
                     DateFormat dateFormat = builder().dateFormat.get();
                     try {
+                        methodData.branchReached[2] = true;
                         String input = iter.readString();
                         return dateFormat.parse(input);
                     } catch (ParseException e) {
+                        methodData.branchReached[3] = true;
                         throw new JsonException(e);
                     }
                 }
             };
         } else if (String.class == type) {
+            methodData.branchReached[4] = true;
             return new Decoder() {
                 @Override
                 public Object decode(JsonIterator iter) throws IOException {
                     ValueType valueType = iter.whatIsNext();
                     if (valueType == ValueType.STRING) {
+                        methodData.branchReached[5] = true;
                         return iter.readString();
                     } else if (valueType == ValueType.NUMBER) {
+                        methodData.branchReached[6] = true;
                         return iter.readNumberAsString();
                     } else if (valueType == ValueType.BOOLEAN) {
+                        methodData.branchReached[7] = true;
                         return iter.readBoolean() ? "true" : "false";
                     } else if (valueType == ValueType.NULL) {
+                        methodData.branchReached[8] = true;
                         iter.skip();
                         return null;
                     } else {
+                        methodData.branchReached[9] = true;
                         throw new JsonException("expect string, but found " + valueType);
                     }
                 }
             };
         } else if (boolean.class == type) {
+            methodData.branchReached[10] = true;
             return new Decoder.BooleanDecoder() {
                 @Override
                 public boolean decodeBoolean(JsonIterator iter) throws IOException {
                     ValueType valueType = iter.whatIsNext();
                     if (valueType == ValueType.BOOLEAN) {
+                        methodData.branchReached[11] = true;
                         return iter.readBoolean();
                     } else if (valueType == ValueType.NULL) {
+                        methodData.branchReached[12] = true;
                         iter.skip();
                         return false;
                     } else {
+                        methodData.branchReached[13] = true;
                         throw new JsonException("expect boolean, but found " + valueType);
                     }
                 }
             };
         } else if (long.class == type) {
+            methodData.branchReached[14] = true;
             return new Decoder.LongDecoder() {
                 @Override
                 public long decodeLong(JsonIterator iter) throws IOException {
                     ValueType valueType = iter.whatIsNext();
                     if (valueType == ValueType.NUMBER) {
+                        methodData.branchReached[15] = true;
                         return iter.readLong();
                     } else if (valueType == ValueType.NULL) {
+                        methodData.branchReached[16] = true;
                         iter.skip();
                         return 0;
                     } else {
+                        methodData.branchReached[17] = true;
                         throw new JsonException("expect long, but found " + valueType);
                     }
                 }
             };
         } else if (int.class == type) {
+            methodData.branchReached[18] = true;
             return new Decoder.IntDecoder() {
                 @Override
                 public int decodeInt(JsonIterator iter) throws IOException {
                     ValueType valueType = iter.whatIsNext();
                     if (valueType == ValueType.NUMBER) {
+                        methodData.branchReached[19] = true;
                         return iter.readInt();
                     } else if (valueType == ValueType.NULL) {
+                        methodData.branchReached[20] = true;
                         iter.skip();
                         return 0;
                     } else {
+                        methodData.branchReached[21] = true;
                         throw new JsonException("expect int, but found " + valueType);
                     }
                 }
             };
         } else if (float.class == type) {
+            methodData.branchReached[22] = true;
             return new Decoder.FloatDecoder() {
                 @Override
                 public float decodeFloat(JsonIterator iter) throws IOException {
                     ValueType valueType = iter.whatIsNext();
                     if (valueType == ValueType.NUMBER) {
+                        methodData.branchReached[23] = true;
                         return iter.readFloat();
                     } else if (valueType == ValueType.NULL) {
+                        methodData.branchReached[24] = true;
                         iter.skip();
                         return 0.0f;
                     } else {
+                        methodData.branchReached[25] = true;
                         throw new JsonException("expect float, but found " + valueType);
                     }
                 }
             };
         } else if (double.class == type) {
+            methodData.branchReached[26] = true;
             return new Decoder.DoubleDecoder() {
                 @Override
                 public double decodeDouble(JsonIterator iter) throws IOException {
                     ValueType valueType = iter.whatIsNext();
                     if (valueType == ValueType.NUMBER) {
+                        methodData.branchReached[27] = true;
                         return iter.readDouble();
                     } else if (valueType == ValueType.NULL) {
+                        methodData.branchReached[28] = true;
                         iter.skip();
                         return 0.0d;
                     } else {
+                        methodData.branchReached[29] = true;
                         throw new JsonException("expect float, but found " + valueType);
                     }
                 }
             };
         }
+        methodData.branchReached[30] = true;
         return super.createDecoder(cacheKey, type);
     }
 
