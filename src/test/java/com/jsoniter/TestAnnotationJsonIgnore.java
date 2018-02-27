@@ -68,7 +68,7 @@ public class TestAnnotationJsonIgnore extends TestCase {
     }
 
     public static class TestObject4 {
-        
+
         @JsonIgnore
         public String field1 = "Orange";
         private double field2 = 0.0;
@@ -80,6 +80,9 @@ public class TestAnnotationJsonIgnore extends TestCase {
     }
 
     public void test_ignore_with_setter() throws IOException {
+        // contract: If a parameter has annotated tag @JsonIgnore
+        // it should not be possible to change the parameter using
+        // a the json iterator
         JsonIterator iter = JsonIterator.parse("{\"field1\": \"Apple\"}");
         TestObject4 t = iter.read(TestObject4.class);
         assertEquals("Orange",t.field1);
