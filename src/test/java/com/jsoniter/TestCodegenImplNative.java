@@ -14,15 +14,15 @@ public class TestCodegenImplNative extends TestCase {
         Object codegenImplNative = Class.forName("com.jsoniter.CodegenImplNative").newInstance();
         Method genReadOp = codegenImplNative.getClass().getDeclaredMethod("genReadOp", String.class, Type.class);
         genReadOp.setAccessible(true);
-        JsoniterSpi.addNewDecoder("cacheKey", new Decoder.BooleanDecoder() {
+        JsoniterSpi.addNewDecoder("boolean_decoder", new Decoder.BooleanDecoder() {
             @Override
             public boolean decodeBoolean(JsonIterator iter) throws IOException {
                 return false;
             }
-        });x
+        });
         Type type = boolean.class;
-        String cacheKey = "cacheKey";
-		assertEquals("com.jsoniter.CodegenAccess.readBoolean(\"cacheKey\", iter)", genReadOp.invoke(codegenImplNative, cacheKey, type));
+        String cacheKey = "boolean_decoder";
+		assertEquals("com.jsoniter.CodegenAccess.readBoolean(\"boolean_decoder\", iter)", genReadOp.invoke(codegenImplNative, cacheKey, type));
 	}
 
     public void testGenReadOpByte() throws Exception {
