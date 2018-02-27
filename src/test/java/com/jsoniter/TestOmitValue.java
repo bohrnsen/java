@@ -60,9 +60,9 @@ public class TestOmitValue extends TestCase {
         assertTrue(exceptionThrown);
     }
 
-    /*public void test_character_true_length_big(){
-        // Contract: test if parse in OmitValue.java doesn't steps in to case with valueType as char.
-        // Returns true iff input to parsed.parse() gets a char.class and a defaultValueToOmit with
+    public void test_character_true_length_big(){
+        // Contract: test if parse in OmitValue.java doesn't steps in to case with valueType as Character.
+        // Returns true iff input to parsed.parse() gets a Character.class and a defaultValueToOmit with
         // length greater than 1.
 
         OmitValue.Parsed parsed = new OmitValue.Parsed(int.class, "hello");
@@ -70,14 +70,12 @@ public class TestOmitValue extends TestCase {
         boolean exceptionThrown = false;
 
         try {
-            parsed.parse(char.class, "toobig");
+            parsed.parse(Character.class, "toobig");
 
         } catch (UnsupportedOperationException e) {
             exceptionThrown = true;
         }
 
         assertTrue(exceptionThrown);
-
-        //Character.class.equals(valueType) && defaultValueToOmit.length() == 1
-    }*/
+    }
 }
