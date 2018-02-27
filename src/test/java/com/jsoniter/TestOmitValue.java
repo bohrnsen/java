@@ -2,9 +2,7 @@ package com.jsoniter;
 
 import com.jsoniter.spi.OmitValue;
 import junit.framework.TestCase;
-
 import java.lang.reflect.Type;
-
 
 public class TestOmitValue extends TestCase {
 
@@ -19,13 +17,45 @@ public class TestOmitValue extends TestCase {
         boolean exceptionThrown = false;
 
         try {
-            OmitValue result = parsed.parse(Type.class, "cow");
+            parsed.parse(Type.class, "cow");
 
         } catch (UnsupportedOperationException e) {
             exceptionThrown = true;
         }
 
         assertTrue(exceptionThrown);
+    }
 
+    public void test_char_true_length_1(){
+        // Contract: test if parse in OmitValue.java steps in to case with valueType as char.
+        // Returns true iff input to parsed.parse() gets a char.class and a defaultValueToOmit with
+        // length 1.
+
+        OmitValue.Parsed parsed = new OmitValue.Parsed(int.class, "hello");
+
+        OmitValue result = parsed.parse(char.class, "c");
+
+        OmitValue.Parsed omp = new OmitValue.Parsed("c", "'c' == %s");
+
+        assertEquals('c', ((OmitValue.Parsed) result).getDefaultValue());
+    }
+
+    public void test_char_true_length_big(){
+        // Contract: test if parse in OmitValue.java doesn't steps in to case with valueType as char.
+        // Returns true iff input to parsed.parse() gets a char.class and a defaultValueToOmit with
+        // length greater than 1.
+
+        OmitValue.Parsed parsed = new OmitValue.Parsed(int.class, "hello");
+
+        boolean exceptionThrown = false;
+
+        try {
+            parsed.parse(char.class, "toobig");
+
+        } catch (UnsupportedOperationException e) {
+            exceptionThrown = true;
+        }
+
+        assertTrue(exceptionThrown);
     }
 }
