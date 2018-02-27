@@ -78,4 +78,5 @@ public class TestOmitValue extends TestCase {
 
         assertTrue(exceptionThrown);
     }
+    
 }
