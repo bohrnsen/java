@@ -5,6 +5,7 @@ import junit.framework.TestCase;
 import java.io.IOException;
 
 public class IterImplForStreamingTest extends TestCase {
+	
 
 	public void testReadMaxDouble() throws Exception {
 		String maxDouble = "1.7976931348623157e+308";
