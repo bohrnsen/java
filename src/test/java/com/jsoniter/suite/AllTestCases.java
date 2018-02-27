@@ -50,6 +50,7 @@ import org.junit.runners.Suite;
         TestSpiPropertyDecoder.class,
         TestGson.class,
         com.jsoniter.output.TestGson.class,
+        com.jsoniter.IterImplForStreamingTest.class,
         TestStreamBuffer.class,
         TestCollection.class,
         TestList.class,
