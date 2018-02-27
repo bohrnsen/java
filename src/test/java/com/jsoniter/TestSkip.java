@@ -34,6 +34,20 @@ public class TestSkip extends TestCase {
         assertTrue(iter.readArray());
         assertEquals(2, iter.readInt());
         assertFalse(iter.readArray());
+
+        iter = JsonIterator.parse("[0,2]");
+        assertTrue(iter.readArray());
+        iter.skip();
+        assertTrue(iter.readArray());
+        assertEquals(2, iter.readInt());
+        assertFalse(iter.readArray());
+
+        iter = JsonIterator.parse("[6,2]");
+        assertTrue(iter.readArray());
+        iter.skip();
+        assertTrue(iter.readArray());
+        assertEquals(2, iter.readInt());
+        assertFalse(iter.readArray());
     }
 
     public void test_skip_negative_number() throws IOException {
