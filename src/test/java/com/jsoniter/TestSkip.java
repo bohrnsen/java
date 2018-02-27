@@ -8,6 +8,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
 public class TestSkip extends TestCase {
+    
 
     public void test_skip_empty_string() throws IOException {
         // contract: If there's nothing in the buffer and you try to skip
