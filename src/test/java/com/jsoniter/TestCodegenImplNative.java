@@ -1,7 +1,10 @@
 package com.jsoniter;
 
+import com.jsoniter.spi.Decoder;
+import com.jsoniter.spi.JsoniterSpi;
 import junit.framework.TestCase;
 
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 
@@ -11,9 +14,15 @@ public class TestCodegenImplNative extends TestCase {
         Object codegenImplNative = Class.forName("com.jsoniter.CodegenImplNative").newInstance();
         Method genReadOp = codegenImplNative.getClass().getDeclaredMethod("genReadOp", String.class, Type.class);
         genReadOp.setAccessible(true);
+        JsoniterSpi.addNewDecoder("cacheKey", new Decoder.BooleanDecoder() {
+            @Override
+            public boolean decodeBoolean(JsonIterator iter) throws IOException {
+                return false;
+            }
+        });x
         Type type = boolean.class;
         String cacheKey = "cacheKey";
-		assertEquals("iter.readBoolean()", genReadOp.invoke(codegenImplNative, cacheKey, type));
+		assertEquals("com.jsoniter.CodegenAccess.readBoolean(\"cacheKey\", iter)", genReadOp.invoke(codegenImplNative, cacheKey, type));
 	}
 
     public void testGenReadOpByte() throws Exception {
