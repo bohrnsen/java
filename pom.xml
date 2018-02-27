@@ -199,11 +199,7 @@
                     <threadCount>1</threadCount>
                     <reuseForks>false</reuseForks>
                     <includes>
-                        <include>com.jsoniter.suite.StreamingTests</include>
-                        <include>com.jsoniter.suite.NonStreamingTests</include>
-                        <include>com.jsoniter.suite.NonStreamingTests4Hash</include>
                         <include>com.jsoniter.suite.NonStreamingTests4Strict</include>
-                        <include>com.jsoniter.suite.ExtraTests</include>
                     </includes>
                 </configuration>
             </plugin>
