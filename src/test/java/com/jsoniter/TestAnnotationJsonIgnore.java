@@ -68,6 +68,7 @@ public class TestAnnotationJsonIgnore extends TestCase {
     }
 
     public static class TestObject4 {
+        
         @JsonIgnore
         public String field1 = "Orange";
         private double field2 = 0.0;
