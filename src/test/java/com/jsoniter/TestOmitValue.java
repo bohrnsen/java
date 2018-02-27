@@ -38,6 +38,7 @@ public class TestOmitValue extends TestCase {
         OmitValue.Parsed omp = new OmitValue.Parsed("c", "'c' == %s");
 
         assertEquals('c', ((OmitValue.Parsed) result).getDefaultValue());
+        assertEquals("'c' == %s", ((OmitValue.Parsed) result).getCode());
     }
 
     public void test_char_true_length_big(){
@@ -58,4 +59,25 @@ public class TestOmitValue extends TestCase {
 
         assertTrue(exceptionThrown);
     }
+
+    /*public void test_character_true_length_big(){
+        // Contract: test if parse in OmitValue.java doesn't steps in to case with valueType as char.
+        // Returns true iff input to parsed.parse() gets a char.class and a defaultValueToOmit with
+        // length greater than 1.
+
+        OmitValue.Parsed parsed = new OmitValue.Parsed(int.class, "hello");
+
+        boolean exceptionThrown = false;
+
+        try {
+            parsed.parse(char.class, "toobig");
+
+        } catch (UnsupportedOperationException e) {
+            exceptionThrown = true;
+        }
+
+        assertTrue(exceptionThrown);
+
+        //Character.class.equals(valueType) && defaultValueToOmit.length() == 1
+    }*/
 }

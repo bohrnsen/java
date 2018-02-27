@@ -139,6 +139,10 @@ public interface OmitValue {
             return defaultValue;
         }
 
+        public String getCode() {
+            return code;
+        }
+
         public static OmitValue parse(Type valueType, String defaultValueToOmit) {
             if ("void".equals(defaultValueToOmit)) {
                 return null;
