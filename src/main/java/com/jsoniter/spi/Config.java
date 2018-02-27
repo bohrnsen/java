@@ -389,7 +389,7 @@ public class Config extends EmptyExtension {
     }
 
     private void updateBindings(ClassDescriptor desc) {
-        MethodData methodData =  new MethodData(17);
+        MethodData methodData =  new MethodData(18);
         dictionary.put("Config - updateBindings", methodData);
         methodData.branchReached[0] = true;
         boolean globalOmitDefault = JsoniterSpi.getCurrentConfig().omitDefaultValue();
