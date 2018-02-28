@@ -387,23 +387,38 @@ class IterImplForStreaming {
 
     public final static boolean readHexSlowPath(JsonIterator iter, int bc, boolean isExpectingLowSurrogate)
             throws IOException, JsonException {
+        MethodData methodData =  new MethodData(10);
+        dictionary.put("IterImplForStreaming - readHexSlowPath", methodData);
+        methodData.branchReached[0] = true;
         if (Character.isHighSurrogate((char) bc)) {
+            methodData.branchReached[1] = true;
             if (isExpectingLowSurrogate) {
+                methodData.branchReached[2] = true;
                 throw new JsonException("invalid surrogate");
             } else {
+                methodData.branchReached[3] = true;
                 isExpectingLowSurrogate = true;
             }
         } else if (Character.isLowSurrogate((char) bc)) {
+            methodData.branchReached[4] = true;
             if (isExpectingLowSurrogate) {
+                methodData.branchReached[5] = true;
                 isExpectingLowSurrogate = false;
             } else {
+                methodData.branchReached[6] = true;
                 throw new JsonException("invalid surrogate");
             }
         } else {
+
+            methodData.branchReached[7] = true;
             if (isExpectingLowSurrogate) {
+
+                methodData.branchReached[8] = true;
                 throw new JsonException("invalid surrogate");
             }
         }
+
+        methodData.branchReached[9] = true;
         return isExpectingLowSurrogate;
     }
 
@@ -421,32 +436,48 @@ class IterImplForStreaming {
     }
 
     public final static SlowPathReader readValidUnicodeSlowPath(SlowPathReader slowPathReader) throws IOException {
+        MethodData methodData =  new MethodData(8);
+        dictionary.put("IterImplForStreaming - readValidUnicodeSlowPath", methodData);
         int j = slowPathReader.j;
         int bc = slowPathReader.bc;
         JsonIterator iter = slowPathReader.iter;
 
+        methodData.branchReached[0] = true;
+
+
         if (bc >= 0x10000) {
+            methodData.branchReached[1] = true;
             // check if valid unicode
-            if (bc >= 0x110000)
+            if (bc >= 0x110000) {
+                methodData.branchReached[2] = true;
                 throw iter.reportError("readStringSlowPath", "invalid unicode character");
+            }
 
             // split surrogates
             final int sup = bc - 0x10000;
             if (iter.reusableChars.length == j) {
+                methodData.branchReached[3] = true;
                 char[] newBuf = new char[iter.reusableChars.length * 2];
                 System.arraycopy(iter.reusableChars, 0, newBuf, 0, iter.reusableChars.length);
                 iter.reusableChars = newBuf;
             }
+
+            methodData.branchReached[4] = true;
             iter.reusableChars[j++] = (char) ((sup >>> 10) + 0xd800);
             if (iter.reusableChars.length == j) {
+
+                methodData.branchReached[5] = true;
                 char[] newBuf = new char[iter.reusableChars.length * 2];
                 System.arraycopy(iter.reusableChars, 0, newBuf, 0, iter.reusableChars.length);
                 iter.reusableChars = newBuf;
             }
+
+            methodData.branchReached[6] = true;
             iter.reusableChars[j++] = (char) ((sup & 0x3ff) + 0xdc00);
             slowPathReader.shouldContinue = true;
         }
 
+        methodData.branchReached[7] = true;
         slowPathReader.j = j;
         slowPathReader.iter = iter;
         slowPathReader.bc = bc;
@@ -455,12 +486,15 @@ class IterImplForStreaming {
     }
 
     public final static SlowPathReader readUnicodeSlowPath(SlowPathReader slowPathReader) throws IOException {
+        MethodData methodData =  new MethodData(18);
+        dictionary.put("IterImplForStreaming - readUnicodeSlowPath", methodData);
         int j = slowPathReader.j;
         int bc = slowPathReader.bc;
         JsonIterator iter = slowPathReader.iter;
 
         final int u2 = readByte(iter);
         if ((bc & 0xE0) == 0xC0) {
+
             bc = ((bc & 0x1F) << 6) + (u2 & 0x3F);
         } else {
             final int u3 = readByte(iter);
@@ -492,7 +526,7 @@ class IterImplForStreaming {
     }
 
     public final static int readStringSlowPath(JsonIterator iter, int j) throws IOException {
-        MethodData methodData =  new MethodData(43);
+        MethodData methodData =  new MethodData(18);
         dictionary.put("IterImplForStreaming - readStringSlowPath", methodData);
         methodData.branchReached[0] = true;
         boolean isExpectingLowSurrogate = false;
@@ -544,7 +578,7 @@ class IterImplForStreaming {
                         isExpectingLowSurrogate = readHexSlowPath(iter, bc, isExpectingLowSurrogate);
                         break;
                     default:
-                        methodData.branchReached[26] = true;
+                        methodData.branchReached[14] = true;
                         throw iter.reportError("readStringSlowPath", "invalid escape character: " + bc);
                 }
             } else if ((bc & 0x80) != 0) {
@@ -556,14 +590,14 @@ class IterImplForStreaming {
                 bc = slowPathReader.bc;
                 if (slowPathReader.shouldContinue) continue;
             }
-            methodData.branchReached[40] = true;
+            methodData.branchReached[15] = true;
             if (iter.reusableChars.length == j) {
-                methodData.branchReached[41] = true;
+                methodData.branchReached[16] = true;
                 char[] newBuf = new char[iter.reusableChars.length * 2];
                 System.arraycopy(iter.reusableChars, 0, newBuf, 0, iter.reusableChars.length);
                 iter.reusableChars = newBuf;
             }
-            methodData.branchReached[42] = true;
+            methodData.branchReached[17] = true;
             iter.reusableChars[j++] = (char) bc;
         }
     }

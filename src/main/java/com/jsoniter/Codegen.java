@@ -147,6 +147,8 @@ class Codegen {
 
     private static Type chooseCollectionImpl(Type type, Class clazz, Type[] typeArgs) {
         Class implClazz = JsoniterSpi.getTypeImplementation(clazz);
+        MethodData methodData =  new MethodData(26);
+        dictionary.put("Codegen - chooseImpl", methodData);
         if (Collection.class.isAssignableFrom(clazz)) {
             methodData.branchReached[5] = true;
             Type compType = Object.class;
@@ -177,6 +179,9 @@ class Codegen {
     }
 
     private static Type chooseMapImpl(Type type, Class clazz, Type[] typeArgs, Class implClazz) {
+
+        MethodData methodData =  new MethodData(26);
+        dictionary.put("Codegen - chooseImpl", methodData);
         if (Map.class.isAssignableFrom(clazz)) {
             methodData.branchReached[13] = true;
             Type keyType = String.class;
@@ -212,6 +217,9 @@ class Codegen {
     }
 
     private static Type chooseAlternativeImpl(Type type, Type[] typeArgs, Class implClazz) {
+
+        MethodData methodData =  new MethodData(26);
+        dictionary.put("Codegen - chooseImpl", methodData);
         if (implClazz != null) {
             methodData.branchReached[22] = true;
             if (typeArgs.length == 0) {
