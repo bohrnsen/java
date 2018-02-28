@@ -52,13 +52,15 @@ import org.junit.runners.Suite;
         TestSpiPropertyDecoder.class,
         TestGson.class,
         com.jsoniter.output.TestGson.class,
+        com.jsoniter.IterImplForStreamingTest.class,
         TestStreamBuffer.class,
         TestCollection.class,
         TestList.class,
         TestAnnotationJsonObject.class,
         com.jsoniter.spi.TestConfig.class,
+        TestOmitValue.class,
         TestIterImpl.class,
         TestCodegenImplNative.class})
-
+  
 public abstract class AllTestCases {
 }
