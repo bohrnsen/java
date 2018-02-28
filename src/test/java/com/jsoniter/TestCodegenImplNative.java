@@ -11,7 +11,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 
 public class TestCodegenImplNative extends TestCase {
-    
+
 	public void testGenReadOpBool() throws Exception {
 	    // contract: If the boolean class and a cachKey mapping to a suitable decoder for
         // the boolean class is passed as argument to genreadOp a string on the form
