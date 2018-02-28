@@ -139,6 +139,14 @@ public interface OmitValue {
             this.code = code;
         }
 
+        public Object getDefaultValue(){
+            return defaultValue;
+        }
+
+        public String getCode() {
+            return code;
+        }
+
         public static OmitValue parse(Type valueType, String defaultValueToOmit) {
             MethodData methodData =  new MethodData(20);
             dictionary.put("OmitValue - parse", methodData);

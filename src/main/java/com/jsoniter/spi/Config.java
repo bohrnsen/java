@@ -388,6 +388,11 @@ public class Config extends EmptyExtension {
         }
     }
 
+    // Added to be able to test the private method updateBindings()
+    public void updateBindings_helper(ClassDescriptor desc) {
+        updateBindings(desc);
+    }
+
     private void updateBindings(ClassDescriptor desc) {
         MethodData methodData =  new MethodData(18);
         dictionary.put("Config - updateBindings", methodData);

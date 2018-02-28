@@ -1,6 +1,7 @@
 package com.jsoniter.suite;
 
 import com.jsoniter.*;
+import com.jsoniter.TestCodegenImplNative;
 import com.jsoniter.TestFloat;
 import com.jsoniter.TestGenerics;
 import com.jsoniter.TestGson;
@@ -56,11 +57,16 @@ import static com.jsoniter.GlobalData.dictionary;
         TestSpiPropertyDecoder.class,
         TestGson.class,
         com.jsoniter.output.TestGson.class,
+        com.jsoniter.IterImplForStreamingTest.class,
         TestStreamBuffer.class,
         TestCollection.class,
         TestList.class,
-        TestAnnotationJsonObject.class})
 
+        TestAnnotationJsonObject.class,
+        com.jsoniter.spi.TestConfig.class,
+        TestOmitValue.class,
+        TestIterImpl.class,
+        TestCodegenImplNative.class})
 public abstract class AllTestCases {
     @AfterClass
     public static void tearDown() {
@@ -82,4 +88,3 @@ public abstract class AllTestCases {
         System.out.println();
     }
 }
-
