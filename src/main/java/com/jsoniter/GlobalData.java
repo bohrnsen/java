@@ -4,11 +4,19 @@ import java.util.HashMap;
 
 public class GlobalData {
 
-    MethodData methodData =  new MethodData(8);
-        dictionary.put("IterImplForStreaming - readValidUnicodeSlowPath", methodData);
+
     public static HashMap<String, MethodData> dictionary;
     static {
         dictionary = new HashMap<String, MethodData>();
+
+        MethodData methodData14 =  new MethodData(9);
+        dictionary.put("IterImplForStreaming - readValidUnicodeSlowPath", methodData14);
+
+        MethodData methodData15 =  new MethodData(10);
+        dictionary.put("IterImplForStreaming - readHexSlowPath", methodData15);
+
+        MethodData methodData12 =  new MethodData(9);
+        dictionary.put("IterImplForStreaming - readUnicodeSlowPath", methodData12);
 
         MethodData methodData10 =  new MethodData(19);
         dictionary.put("IterImplSkip - skip", methodData10);

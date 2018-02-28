@@ -387,8 +387,7 @@ class IterImplForStreaming {
 
     public final static boolean readHexSlowPath(JsonIterator iter, int bc, boolean isExpectingLowSurrogate)
             throws IOException, JsonException {
-        MethodData methodData =  new MethodData(10);
-        dictionary.put("IterImplForStreaming - readHexSlowPath", methodData);
+        MethodData methodData = dictionary.get("IterImplForStreaming - readHexSlowPath");
         methodData.branchReached[0] = true;
         if (Character.isHighSurrogate((char) bc)) {
             methodData.branchReached[1] = true;
@@ -436,6 +435,7 @@ class IterImplForStreaming {
     }
 
     public final static SlowPathReader readValidUnicodeSlowPath(SlowPathReader slowPathReader) throws IOException {
+        MethodData methodData =  dictionary.get("IterImplForStreaming - readValidUnicodeSlowPath");
 
         int j = slowPathReader.j;
         int bc = slowPathReader.bc;
@@ -485,27 +485,34 @@ class IterImplForStreaming {
     }
 
     public final static SlowPathReader readUnicodeSlowPath(SlowPathReader slowPathReader) throws IOException {
-        MethodData methodData =  new MethodData(18);
-        dictionary.put("IterImplForStreaming - readUnicodeSlowPath", methodData);
+        MethodData methodData = dictionary.get("IterImplForStreaming - readValidUnicodeSlowPath");
+
         int j = slowPathReader.j;
         int bc = slowPathReader.bc;
         JsonIterator iter = slowPathReader.iter;
+        methodData.branchReached[0] = true;
 
         final int u2 = readByte(iter);
         if ((bc & 0xE0) == 0xC0) {
-
+            methodData.branchReached[1] = true;
             bc = ((bc & 0x1F) << 6) + (u2 & 0x3F);
         } else {
+            methodData.branchReached[2] = true;
             final int u3 = readByte(iter);
             if ((bc & 0xF0) == 0xE0) {
+                methodData.branchReached[3] = true;
                 bc = ((bc & 0x0F) << 12) + ((u2 & 0x3F) << 6) + (u3 & 0x3F);
             } else {
+                methodData.branchReached[4] = true;
                 final int u4 = readByte(iter);
                 if ((bc & 0xF8) == 0xF0) {
+                    methodData.branchReached[5] = true;
                     bc = ((bc & 0x07) << 18) + ((u2 & 0x3F) << 12) + ((u3 & 0x3F) << 6) + (u4 & 0x3F);
                 } else {
+                    methodData.branchReached[6] = true;
                     throw iter.reportError("readStringSlowPath", "invalid unicode character");
                 }
+                methodData.branchReached[7] = true;
                 slowPathReader.j = j;
                 slowPathReader.bc = bc;
                 slowPathReader.iter = iter;
@@ -520,6 +527,8 @@ class IterImplForStreaming {
         slowPathReader.j = j;
         slowPathReader.iter = iter;
         slowPathReader.bc = bc;
+
+        methodData.branchReached[8] = true;
 
         return slowPathReader;
     }
