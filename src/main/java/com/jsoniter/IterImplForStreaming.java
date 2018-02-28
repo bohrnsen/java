@@ -436,8 +436,7 @@ class IterImplForStreaming {
     }
 
     public final static SlowPathReader readValidUnicodeSlowPath(SlowPathReader slowPathReader) throws IOException {
-        MethodData methodData =  new MethodData(8);
-        dictionary.put("IterImplForStreaming - readValidUnicodeSlowPath", methodData);
+
         int j = slowPathReader.j;
         int bc = slowPathReader.bc;
         JsonIterator iter = slowPathReader.iter;
