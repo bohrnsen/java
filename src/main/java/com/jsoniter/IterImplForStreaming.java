@@ -385,10 +385,6 @@ class IterImplForStreaming {
 
     public final static boolean readHexSlowPath(JsonIterator iter, int bc, boolean isExpectingLowSurrogate)
             throws IOException, JsonException {
-        bc = (IterImplString.translateHex(readByte(iter)) << 12) +
-                (IterImplString.translateHex(readByte(iter)) << 8) +
-                (IterImplString.translateHex(readByte(iter)) << 4) +
-                IterImplString.translateHex(readByte(iter));
         if (Character.isHighSurrogate((char) bc)) {
             if (isExpectingLowSurrogate) {
                 throw new JsonException("invalid surrogate");
@@ -475,6 +471,9 @@ class IterImplForStreaming {
                 } else {
                     throw iter.reportError("readStringSlowPath", "invalid unicode character");
                 }
+                slowPathReader.j = j;
+                slowPathReader.bc = bc;
+                slowPathReader.iter = iter;
                 slowPathReader = readValidUnicodeSlowPath(slowPathReader);
 
                 j = slowPathReader.j;
@@ -520,9 +519,12 @@ class IterImplForStreaming {
                     case '\\':
                         break;
                     case 'u':
+                        bc = (IterImplString.translateHex(readByte(iter)) << 12) +
+                                (IterImplString.translateHex(readByte(iter)) << 8) +
+                                (IterImplString.translateHex(readByte(iter)) << 4) +
+                                IterImplString.translateHex(readByte(iter));
                         isExpectingLowSurrogate = readHexSlowPath(iter, bc, isExpectingLowSurrogate);
                         break;
-
                     default:
                         throw iter.reportError("readStringSlowPath", "invalid escape character: " + bc);
                 }
