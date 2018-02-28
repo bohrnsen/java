@@ -385,8 +385,7 @@ class IterImplForStreaming {
     }
 
     public final static int readStringSlowPath(JsonIterator iter, int j) throws IOException {
-        MethodData methodData =  new MethodData(43);
-        dictionary.put("IterImplForStreaming - readStringSlowPath", methodData);
+        MethodData methodData = dictionary.get("IterImplForStreaming - readStringSlowPath");
         methodData.branchReached[0] = true;
         boolean isExpectingLowSurrogate = false;
         for (;;) {

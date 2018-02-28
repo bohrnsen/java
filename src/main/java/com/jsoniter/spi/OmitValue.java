@@ -140,8 +140,7 @@ public interface OmitValue {
         }
 
         public static OmitValue parse(Type valueType, String defaultValueToOmit) {
-            MethodData methodData =  new MethodData(20);
-            dictionary.put("OmitValue - parse", methodData);
+            MethodData methodData = dictionary.get("OmitValue - parse");
             methodData.branchReached[0] = true;
             if ("void".equals(defaultValueToOmit)) {
                 methodData.branchReached[1] = true;

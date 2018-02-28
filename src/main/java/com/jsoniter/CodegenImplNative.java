@@ -195,8 +195,7 @@ class CodegenImplNative {
     }
 
     private static String genReadOp(String cacheKey, Type valueType) {
-        MethodData methodData =  new MethodData(42);
-        dictionary.put("CodegenImplNative - genReadOp", methodData);
+        MethodData methodData = dictionary.get("CodegenImplNative - genReadOp");
         // the field decoder might be registered directly
         methodData.branchReached[0] = true;
         Decoder decoder = JsoniterSpi.getDecoder(cacheKey);

@@ -217,8 +217,7 @@ class IterImpl {
     }
 
     public final static int readStringSlowPath(JsonIterator iter, int j) throws IOException {
-        MethodData methodData =  new MethodData(40);
-        dictionary.put("IterImpl - readStringSlowPath", methodData);
+        MethodData methodData = dictionary.get("IterImpl - readStringSlowPath");
         methodData.branchReached[0] = true;
         try {
             methodData.branchReached[1] = true;

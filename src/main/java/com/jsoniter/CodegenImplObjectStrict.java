@@ -23,8 +23,7 @@ class CodegenImplObjectStrict {
     }};
 
     public static String genObjectUsingStrict(ClassDescriptor desc) {
-        MethodData methodData =  new MethodData(29);
-        dictionary.put("CodegenImplObjectStrict - genObjectUsingStrict", methodData);
+        MethodData methodData = dictionary.get("CodegenImplObjectStrict - genObjectUsingStrict");
         methodData.branchReached[0] = true;
         List<Binding> allBindings = desc.allDecoderBindings();
         int lastRequiredIdx = assignMaskForRequiredProperties(allBindings);
