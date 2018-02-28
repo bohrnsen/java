@@ -11,6 +11,7 @@ import com.jsoniter.TestString;
 import com.jsoniter.any.TestList;
 import com.jsoniter.output.*;
 import com.jsoniter.output.TestInteger;
+import com.jsoniter.spi.TestConfig;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
@@ -56,11 +57,10 @@ import org.junit.runners.Suite;
         TestCollection.class,
         TestList.class,
         TestAnnotationJsonObject.class,
-<<<<<<< HEAD
-=======
+        com.jsoniter.spi.TestConfig.class,
         TestOmitValue.class,
         TestIterImpl.class,
->>>>>>> origin/improveCoverage
         TestCodegenImplNative.class})
+  
 public abstract class AllTestCases {
 }
