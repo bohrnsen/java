@@ -19,8 +19,7 @@ class IterImplSkip {
     }
 
     public static final void skip(JsonIterator iter) throws IOException {
-        MethodData methodData =  new MethodData(19);
-        dictionary.put("IterImplSkip - skip", methodData);
+        MethodData methodData = dictionary.get("IterImplSkip - skip");
         methodData.branchReached[18] = true;
         byte c = IterImpl.nextToken(iter);
         switch (c) {

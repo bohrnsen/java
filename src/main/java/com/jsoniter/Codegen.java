@@ -124,8 +124,8 @@ class Codegen {
     }
 
     private static Type chooseImpl(Type type) {
-        MethodData methodData =  new MethodData(26);
-        dictionary.put("Codegen - chooseImpl", methodData);
+        MethodData methodData = dictionary.get("Codegen - chooseImpl");
+        methodData.branchReached[18] = true;
         Type[] typeArgs = new Type[0];
         Class clazz;
         methodData.branchReached[0] = true;
