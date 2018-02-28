@@ -5,6 +5,8 @@ import org.junit.Test;
 
 public class TestIterImpl extends TestCase {
 
+    // Contract: readStringSlowPath casts IndexOutOfBoundsException: incomplete
+    // string if iter = JsonIterator.parse("\\b")
     @Test(expected = IndexOutOfBoundsException.class)
     public void testReadStringSlowPathIncompleteString1() {
         String json = "\\b";
@@ -14,6 +16,8 @@ public class TestIterImpl extends TestCase {
         } catch (Exception e) {}
     }
 
+    // Contract: readStringSlowPath casts IndexOutOfBoundsException: incomplete
+    // string if iter = JsonIterator.parse("\\n")
     @Test(expected = IndexOutOfBoundsException.class)
     public void testReadStringSlowPathIncompleteString2() {
         String json = "\\n";
@@ -23,6 +27,8 @@ public class TestIterImpl extends TestCase {
         } catch (Exception e) {}
     }
 
+    // Contract: readStringSlowPath casts IndexOutOfBoundsException: incomplete
+    // string if iter = JsonIterator.parse("\\f")
     @Test(expected = IndexOutOfBoundsException.class)
     public void testReadStringSlowPathIncompleteString3() {
         String json = "\\f";
@@ -32,6 +38,8 @@ public class TestIterImpl extends TestCase {
         } catch (Exception e) {}
     }
 
+    // Contract: readStringSlowPath casts IndexOutOfBoundsException: incomplete
+    // string if iter = JsonIterator.parse("\\r")
     @Test(expected = IndexOutOfBoundsException.class)
     public void testReadStringSlowPathIncompleteString4() {
         String json = "\\r";
