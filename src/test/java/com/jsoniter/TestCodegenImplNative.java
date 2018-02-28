@@ -1,6 +1,7 @@
 package com.jsoniter;
 
 import com.jsoniter.spi.Decoder;
+import com.jsoniter.spi.JsonException;
 import com.jsoniter.spi.JsoniterSpi;
 import junit.framework.TestCase;
 
@@ -11,6 +12,10 @@ import java.lang.reflect.Type;
 public class TestCodegenImplNative extends TestCase {
     
 	public void testGenReadOpBool() throws Exception {
+	    // contract: If the boolean class and a cachKey mapping to a suitable decoder for
+        // the boolean class is passed as argument to genreadOp a string on the form
+        // "com.jsoniter.CodegenAccess.readBoolean(\"$(cash_key)\", iter)" should be
+        // returned. Otherwise an exception should be thrown.
         Object codegenImplNative = Class.forName("com.jsoniter.CodegenImplNative").newInstance();
         Method genReadOp = codegenImplNative.getClass().getDeclaredMethod("genReadOp", String.class, Type.class);
         genReadOp.setAccessible(true);
@@ -23,6 +28,22 @@ public class TestCodegenImplNative extends TestCase {
         Type type = boolean.class;
         String cacheKey = "boolean_decoder";
 		assertEquals("com.jsoniter.CodegenAccess.readBoolean(\"boolean_decoder\", iter)", genReadOp.invoke(codegenImplNative, cacheKey, type));
+
+        // Replace the decoder with a decoder for different type
+        JsoniterSpi.addNewDecoder("boolean_decoder", new Decoder.IntDecoder() {
+            @Override
+            public int decodeInt(JsonIterator iter) throws IOException {
+                return 0;
+            }
+        });
+        boolean exceptionThrown = false;
+        try {
+            genReadOp.invoke(codegenImplNative,cacheKey,type);
+        } catch (Exception _) {
+            exceptionThrown = true;
+        }
+
+        assertTrue(exceptionThrown);
 	}
 
     public void testGenReadOpByte() throws Exception {
