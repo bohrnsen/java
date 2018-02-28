@@ -394,8 +394,7 @@ public class Config extends EmptyExtension {
     }
 
     private void updateBindings(ClassDescriptor desc) {
-        MethodData methodData =  new MethodData(18);
-        dictionary.put("Config - updateBindings", methodData);
+        MethodData methodData = dictionary.get("Config - updateBindings");
         methodData.branchReached[0] = true;
         boolean globalOmitDefault = JsoniterSpi.getCurrentConfig().omitDefaultValue();
         for (Binding binding : desc.allBindings()) {
@@ -459,6 +458,7 @@ public class Config extends EmptyExtension {
                             setter.fromNames = new String[0];
                             setter.toNames = new String[0];
                         }
+                        methodData.branchReached[18] = true;
                     }
                 }
                 methodData.branchReached[14] = true;
@@ -471,6 +471,7 @@ public class Config extends EmptyExtension {
                             getter.fromNames = new String[0];
                             getter.toNames = new String[0];
                         }
+                        methodData.branchReached[19] = true;
                     }
                 }
                 methodData.branchReached[15] = true;

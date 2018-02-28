@@ -336,8 +336,7 @@ public class GsonCompatibilityMode extends Config {
 
     @Override
     public Decoder createDecoder(String cacheKey, Type type) {
-        final MethodData methodData =  new MethodData(31);
-        dictionary.put("extra/GsonCompatibilityMode - createDecoder", methodData);
+        final MethodData methodData = dictionary.get("extra/GsonCompatibilityMode - createDecoder");
         methodData.branchReached[0] = true;
         if (Date.class == type) {
             methodData.branchReached[1] = true;
