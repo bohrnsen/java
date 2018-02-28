@@ -55,7 +55,6 @@ import org.junit.runners.Suite;
         TestCollection.class,
         TestList.class,
         TestAnnotationJsonObject.class,
-        iter-impl
         TestIterImpl.class,
         TestCodegenImplNative.class})
 
