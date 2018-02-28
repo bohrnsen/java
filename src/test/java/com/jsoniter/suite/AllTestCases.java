@@ -1,6 +1,7 @@
 package com.jsoniter.suite;
 
 import com.jsoniter.*;
+import com.jsoniter.TestCodegenImplNative;
 import com.jsoniter.TestFloat;
 import com.jsoniter.TestGenerics;
 import com.jsoniter.TestGson;
@@ -54,6 +55,9 @@ import org.junit.runners.Suite;
         TestCollection.class,
         TestList.class,
         TestAnnotationJsonObject.class,
-        TestIterImpl.class})
+        iter-impl
+        TestIterImpl.class,
+        TestCodegenImplNative.class})
+
 public abstract class AllTestCases {
 }
