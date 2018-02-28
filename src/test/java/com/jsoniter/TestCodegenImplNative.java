@@ -82,15 +82,38 @@ public class TestCodegenImplNative extends TestCase {
     }
 
     public void testGenReadOpShort() throws Exception {
+        // contract: If the byte class and a cachKey mapping to a suitable decoder for
+        // the byte class is passed as argument to genreadOp a string on the form
+        // "com.jsoniter.CodegenAccess.readShort($(cash_key), iter)" should be
+        // returned. Otherwise an exception should be thrown.
         Object codegenImplNative = Class.forName("com.jsoniter.CodegenImplNative").newInstance();
         Method genReadOp = codegenImplNative.getClass().getDeclaredMethod("genReadOp", String.class, Type.class);
         genReadOp.setAccessible(true);
-        // byte and short should return readShort
-        Type typeByte = byte.class;
-        Type typeShort = short.class;
-        String cacheKey = "cacheKey";
-        assertEquals("iter.readShort()", genReadOp.invoke(codegenImplNative, cacheKey, typeByte));
-        assertEquals("iter.readShort()", genReadOp.invoke(codegenImplNative, cacheKey, typeShort));
+        JsoniterSpi.addNewDecoder("short_decoder", new Decoder.ShortDecoder(){
+            @Override
+            public short decodeShort(JsonIterator iter) throws IOException {
+                return 0;
+            }
+        });
+        Type type = short.class;
+        String cacheKey = "short_decoder";
+        assertEquals("com.jsoniter.CodegenAccess.readShort(\"short_decoder\", iter)", genReadOp.invoke(codegenImplNative, cacheKey, type));
+
+        // Replace the decoder with a decoder for different type
+        JsoniterSpi.addNewDecoder("short_decoder", new Decoder.IntDecoder() {
+            @Override
+            public int decodeInt(JsonIterator iter) throws IOException {
+                return 0;
+            }
+        });
+        boolean exceptionThrown = false;
+        try {
+            genReadOp.invoke(codegenImplNative,cacheKey,type);
+        } catch (Exception _) {
+            exceptionThrown = true;
+        }
+
+        assertTrue(exceptionThrown);
     }
 
     public void testGenReadOpInt() throws Exception {
