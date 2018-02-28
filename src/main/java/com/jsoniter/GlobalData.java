@@ -13,7 +13,7 @@ public class GlobalData {
         MethodData methodData9 =  new MethodData(26);
         dictionary.put("Codegen - chooseImpl", methodData9);
 
-        MethodData methodData8 =  new MethodData(18);
+        MethodData methodData8 =  new MethodData(20);
         dictionary.put("Config - updateBindings", methodData8);
 
         MethodData methodData7 =  new MethodData(24);

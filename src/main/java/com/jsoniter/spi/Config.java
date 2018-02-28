@@ -453,6 +453,7 @@ public class Config extends EmptyExtension {
                             setter.fromNames = new String[0];
                             setter.toNames = new String[0];
                         }
+                        methodData.branchReached[18] = true;
                     }
                 }
                 methodData.branchReached[14] = true;
@@ -465,6 +466,7 @@ public class Config extends EmptyExtension {
                             getter.fromNames = new String[0];
                             getter.toNames = new String[0];
                         }
+                        methodData.branchReached[19] = true;
                     }
                 }
                 methodData.branchReached[15] = true;
